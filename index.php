@@ -30,7 +30,7 @@
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+                <a class="nav-link" href="motivation.html">Motivacia</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Services</a>
@@ -62,20 +62,25 @@
         <div class="col-md-4">
             <h3 class="text-center text-info">Pridaj ulohu</h3>
             <form action="action.php" method="post">
+                <input type="hidden" name="id" value="<?= $id; ?>">
                 <div class="form-group">
-                    <input type="text" name="typ" class="form-control" placeholder="Zadaj typ" required>
+                    <input type="text" name="typ" value="<?= $typ;?>" class="form-control" placeholder="Zadaj typ" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="todo" class="form-control" placeholder="Zadaj todo" required>
+                    <input type="text" name="todo" value="<?= $todo;?>" class="form-control" placeholder="Zadaj todo" required>
                 </div>
                 <div class="form-group">
-                    <input type="text" name="poznamka" class="form-control" placeholder="Zadaj poznamku">
+                    <input type="text" name="poznamka" value="<?= $poznamka;?>" class="form-control" placeholder="Zadaj poznamku">
                 </div>
                 <div class="form-group">
-                    <input type="text" name="deadline" class="form-control" placeholder="Zadaj DeadLine">
+                    <input type="text" name="deadline" value="<?= $deadline;?>" class="form-control" placeholder="Zadaj DeadLine">
                 </div>
                 <div class="form-group">
-                    <input type="submit" name="add" class="btn btn-primary btn-block" value="Pridaj zaznam">
+                    <?php if ($update==true){ ?>
+                        <input type="submit" name="update" class="btn btn-success btn-block" value="Aktualizuj zaznam">
+                    <?php } else{ ?>
+                        <input type="submit" name="add" class="btn btn-primary btn-block" value="Pridaj zaznam">
+                    <?php } ?>
                 </div>
             </form>
         </div>
@@ -98,19 +103,21 @@
                     <th>Action</th>
                 </tr>
                 </thead>
+                <?php while($row=$result->fetch_assoc()){?>
                 <tbody>
                 <tr>
-                    <td>1</td>
-                    <td>Skola</td>
-                    <td>Odovzdaj semestralku</td>
-                    <td>blablabla</td>
-                    <td>2.12.2021</td>
+                    <td><?= $row['id'];?></td>
+                    <td><?= $row['typ'];?></td>
+                    <td><?= $row['todo'];?></td>
+                    <td><?= $row['poznamka'];?></td>
+                    <td><?= $row['deadline'];?></td>
                     <td>
-                        <a href="#" class="badge badge-primary p-2">Detail</a> |
-                        <a href="#" class="badge badge-danger p-2">Zmazat</a> |
-                        <a href="#" class="badge badge-success p-2">Upravit</a>
+                        <a href="detail.php?detail=<?= $row['id'];?>" class="badge badge-primary p-2">Detail</a> |
+                        <a href="action.php?delete=<?= $row['id'];?>" class="badge badge-danger p-2" onclick="return confirm('Chces vymazat tento zaznam?');">Zmazat</a> |
+                        <a href="index.php?edit=<?= $row['id'];?>" class="badge badge-success p-2">Upravit</a>
                     </td>
                 </tr>
+                <?php } ?>
                 </tbody>
             </table>
         </div>
